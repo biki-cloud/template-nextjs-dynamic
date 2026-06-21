@@ -1,17 +1,22 @@
-# Your wrangler.toml file should look something like this:
-name = "nextjs-d1-drizzle-cloudflare-pages"
+# ⚠️ このファイルをコピーして使用します
+# cp wrangler.toml.example wrangler.toml.development  # 開発用
+# cp wrangler.toml.example wrangler.toml.production   # 本番用
+
+# ⚠️ name をアプリ名に変更してください（例: my-saas-app）
+name = "my-app"
 compatibility_date = "2024-11-11"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
-# WARNING: When running a production build locally using Wrangler, be aware that the .env file may be omitted. Therefore, ensure that you have the same environment variables in your wrangler.toml file.
-# However, you don't have to include Drizzle environment unless you want to access `drizzle-kit` commands in the deployed code.
+# WARNING: wrangler実行時は.envが読まれない場合があります。本番環境変数はCloudflareダッシュボードで設定してください。
 [vars]
 
 [[d1_databases]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "nextjs-d1-drizzle-cloudflare-pages" # When you create your D1 DB, you choose the name
-# For Local: Placeholder for local development. like "local". [Warning] -> Empty is occur error.
-# For Production: use actual database_id for production
-database_id = "xxxxxxx" 
+binding = "DB"
+# ⚠️ Cloudflareダッシュボードで作成したD1 DB名に変更してください
+database_name = "my-app-db"
+# ローカル開発用: "DB" または任意の文字列（空文字はエラーになります）
+# 本番用: Cloudflareダッシュボードで確認できるdatabase_idを設定してください
+database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 preview_database_id = "DB"
+

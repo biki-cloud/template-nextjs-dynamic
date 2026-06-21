@@ -5,26 +5,15 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
 
-type Customer = { customerId: string };
-
-type CustomersResponse = {
-  customers?: Customer[];
-  error?: string;
-};
-
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
-  const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [customerId, setCustomerId] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    // 認証状態を確認（ログインしていなくても表示）
     void supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      // 顧客データを取得
-      void fetchCustomers();
+      setLoading(false);
     });
 
     const {
@@ -34,40 +23,7 @@ export default function Home() {
     });
 
     return () => subscription.unsubscribe();
-  }, [router]);
-
-  const fetchCustomers = async () => {
-    try {
-      const response = await fetch('/api/customers');
-      const data: CustomersResponse = await response.json();
-      setCustomers(data.customers ?? []);
-    } catch (error) {
-      console.error('Failed to fetch customers:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!customerId.trim()) return;
-
-    try {
-      const formData = new FormData();
-      formData.append('customerId', customerId);
-      const response = await fetch('/api/customers', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        setCustomerId('');
-        await fetchCustomers();
-      }
-    } catch (error) {
-      console.error('Failed to create customer:', error);
-    }
-  };
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -77,65 +33,83 @@ export default function Home() {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p>読み込み中...</p>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500" />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">ホーム</h1>
-          {user ? (
-            <p className="text-sm text-gray-600">ログイン中: {user.email}</p>
-          ) : (
-            <p className="text-sm text-gray-600">ログインしていません</p>
-          )}
+    <div className="min-h-screen bg-gray-50">
+      {/* ヘッダー */}
+      <header className="border-b bg-white px-6 py-4 shadow-sm">
+        <div className="mx-auto flex max-w-5xl items-center justify-between">
+          <h1 className="text-xl font-bold text-gray-800">
+            {/* ⚠️ アプリ名を変更してください */}
+            アプリ名
+          </h1>
+          <div className="flex items-center gap-4">
+            {user ? (
+              <>
+                <span className="text-sm text-gray-500">{user.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 transition hover:bg-gray-100"
+                >
+                  ログアウト
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => router.push('/auth')}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700"
+              >
+                ログイン
+              </button>
+            )}
+          </div>
         </div>
-        <div className="flex gap-2">
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-            >
-              ログアウト
-            </button>
-          ) : (
+      </header>
+
+      {/* メインコンテンツ */}
+      <main className="mx-auto max-w-5xl px-6 py-12">
+        {user ? (
+          <div className="space-y-6">
+            <div className="rounded-xl bg-white p-6 shadow-sm">
+              <h2 className="mb-2 text-lg font-semibold text-gray-800">ようこそ 👋</h2>
+              <p className="text-gray-600">
+                ログイン中: <span className="font-medium text-blue-600">{user.email}</span>
+              </p>
+            </div>
+
+            {/* ダッシュボードのコンテンツをここに追加 */}
+            {/* 例: アイテム一覧、統計、設定など */}
+            <div className="rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
+              <p className="text-gray-400">
+                ここにメインコンテンツを実装してください
+              </p>
+              <p className="mt-2 text-sm text-gray-400">
+                src/app/home/page.tsx を編集
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-xl bg-white p-12 text-center shadow-sm">
+            <h2 className="mb-4 text-2xl font-bold text-gray-800">
+              {/* ⚠️ アプリの説明に変更してください */}
+              アプリの説明をここに書きましょう
+            </h2>
+            <p className="mb-8 text-gray-500">
+              ログインするとすべての機能が使えます。
+            </p>
             <button
               onClick={() => router.push('/auth')}
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="rounded-lg bg-blue-600 px-8 py-3 text-white transition hover:bg-blue-700"
             >
-              ログイン
+              ログイン / 新規登録
             </button>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <p>Your customer IDs</p>
-        <ul>
-          {customers.map((customer) => (
-            <li key={customer.customerId}>{customer.customerId}</li>
-          ))}
-          {user && (
-            <li>
-              <form onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  value={customerId}
-                  onChange={(e) => setCustomerId(e.target.value)}
-                  placeholder="add a new customer ID"
-                />
-                <button type="submit" className="border-2 border-red-500 p-1">
-                  submit
-                </button>
-              </form>
-            </li>
-          )}
-        </ul>
-        <p>end</p>
-      </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
