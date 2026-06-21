@@ -13,8 +13,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Next.js D1 Drizzle Cloudflare Pages App',
-  description: 'Next.js application with D1, Drizzle, and Cloudflare Pages',
+  title: 'アプリ名',
+  description: 'アプリの説明文をここに記載してください。',
   manifest: '/manifest.json',
   icons: {
     icon: '/icon.svg',
@@ -23,21 +23,21 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Next.js App',
+    title: 'アプリ名',
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
     type: 'website',
-    siteName: 'Next.js App',
-    title: 'Next.js D1 Drizzle Cloudflare Pages App',
-    description: 'Next.js application with D1, Drizzle, and Cloudflare Pages',
+    siteName: 'アプリ名',
+    title: 'アプリ名',
+    description: 'アプリの説明文をここに記載してください。',
   },
   twitter: {
     card: 'summary',
-    title: 'Next.js D1 Drizzle Cloudflare Pages App',
-    description: 'Next.js application with D1, Drizzle, and Cloudflare Pages',
+    title: 'アプリ名',
+    description: 'アプリの説明文をここに記載してください。',
   },
 };
 
