@@ -1,7 +1,7 @@
 {
-  "name": "Next.js D1 Drizzle Cloudflare Pages App",
-  "short_name": "Next.js App",
-  "description": "Next.js application with D1, Drizzle, and Cloudflare Pages",
+  "name": "Template Next.js Dynamic App",
+  "short_name": "Dynamic App",
+  "description": "Next.js application template with D1, Drizzle, Supabase Auth, and Cloudflare.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -21,4 +21,3 @@
     }
   ]
 }
-

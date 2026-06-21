@@ -20,7 +20,7 @@
 
 ---
 
-## 🚀 新規プロジェクトの作り方
+## 新規プロジェクトの作り方
 
 このリポジトリはGitHubテンプレートとして設定されています。
 
@@ -30,7 +30,7 @@ gh repo create biki-cloud/my-new-app --template biki-cloud/template-nextjs-dynam
 
 ---
 
-## ⚙️ セットアップ手順
+## セットアップ手順
 
 ### 1. 環境変数ファイルを作成
 
@@ -122,3 +122,7 @@ src/
 ```bash
 pnpm pages:deploy
 ```
+
+## 詳しいハンズオン
+
+初回セットアップ、Supabase Auth、D1、デプロイ、最初の改造ポイントは [docs/HANDS_ON.md](docs/HANDS_ON.md) にまとめています。
